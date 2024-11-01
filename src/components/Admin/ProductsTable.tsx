@@ -22,16 +22,7 @@ import { useNavigate } from 'react-router-dom';
 
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
-// Definindo o tipo para produto
-interface Product {
-  _id: string;
-  name: string;
-  description: string;
-  price: number;
-  quantity: number;
-  imageUrls: string[];
-  isActive: boolean;
-}
+import { Product } from '../../interfaces/product';
 
 const ProductsTable: React.FC = () => {
   const navigate = useNavigate()
@@ -65,6 +56,11 @@ const ProductsTable: React.FC = () => {
         product._id === productId ? { ...product, [fieldName]: value } : product
       )
     );
+    setFilteredProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product._id === productId ? { ...product, [fieldName]: value } : product
+      )
+    ) 
   };
   
   // Função para salvar as alterações de um produto no backend
