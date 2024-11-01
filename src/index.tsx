@@ -8,6 +8,8 @@ import store from './store';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import AdminProduct from './components/Admin/Product';
 import ProductsTable from './components/Admin/ProductsTable';
+import ProductPurchasePage from './components/ProductPurchasePage';
+import SalesTable from './components/Admin/SalesTable';
 
 const rootElement = document.getElementById('root');
 if (rootElement) {
@@ -22,6 +24,8 @@ if (rootElement) {
             }/>
             <Route path='/admin/product' element={<AdminProduct/>} />
             <Route path='/admin/products' element={<ProductsTable/>} />
+            <Route path="/admin/sales" element={<SalesTable />} />
+            <Route path="/product/:id" element={<ProductPurchasePage />} />
           </Routes>
         </Router>
       </Provider>
