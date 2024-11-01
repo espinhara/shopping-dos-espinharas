@@ -3,9 +3,10 @@ import { Card, CardContent, CardMedia, Typography, Button } from '@mui/material'
 import { useDispatch } from 'react-redux';
 import { addItemToCart } from '../store/slices/cartSlice';
 import { ShoppingCart } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 interface ProductCardProps {
-  id: number;
+  id: string;
   name: string;
   price: number;
   imageUrl: string;
@@ -13,7 +14,10 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, imageUrl }) => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const handleBuyNow = () => {
+    navigate(`/product/${id}`);
+  };
   const handleAddToCart = () => {
     dispatch(addItemToCart({
       id, name, price, imageUrl,
@@ -38,7 +42,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, imageUrl }) 
         }} onClick={handleAddToCart} variant="contained" color="primary">
           Adicionar  <ShoppingCart/>
         </Button>
-        <Button variant="contained" color="success">
+        <Button variant="contained" onClick={handleBuyNow} color="success">
           Comprar
         </Button>
       </CardContent>
