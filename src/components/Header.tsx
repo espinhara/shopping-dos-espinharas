@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge, Menu, MenuItem, Avatar } from '@mui/material';
 import { ShoppingCart, Search } from '@mui/icons-material';
 import { styled, alpha } from '@mui/material/styles';
-import logo from '../assets/images/ShoppingEspinharas.png'
+import logo from '../assets/images/logo.png'
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import Cart from './Cart';
@@ -80,11 +80,11 @@ const Header: React.FC = () => {
   // };
 
   return (
-    <AppBar sx={{backgroundColor:"#ff8fa6"}} position="static">
+    <AppBar sx={{backgroundColor:"#5B1B64"}} position="static">
       <Toolbar>
         {/* Logo */}
         <Typography variant="h6" noWrap component="div">
-          <img src={logo} alt="Logo" style={{ height: '40px' }} />
+          <img src={logo} alt="Logo" style={{ height: '45px' }} />
           {/* Shopping dos Espinhara's */}
         </Typography>
 
