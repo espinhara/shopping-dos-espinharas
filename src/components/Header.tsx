@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge, Menu, MenuItem, Avatar } from '@mui/material';
 import { ShoppingCart, Search } from '@mui/icons-material';
 import { styled, alpha } from '@mui/material/styles';
@@ -6,6 +6,7 @@ import logo from '../assets/images/logo.png'
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import Cart from './Cart';
+import { useNavigate } from 'react-router-dom';
 const SearchBar = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -47,13 +48,23 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [cartAnchorEl, setCartAnchorEl] = useState<null | HTMLElement>(null);
+  const [user, setUser] = useState<null | { name: string } | any>(null)
   // const isMenuOpen = Boolean(anchorEl);
   const isCartOpen = Boolean(cartAnchorEl);
   const items = useSelector((state: RootState) => state.cart.items);
   const itemCount = items.reduce((total, item) => total + item.quantity, 0);
+  const hasUser = localStorage.getItem('user')
 
+  useEffect(() => {
+
+    if (hasUser && !user) {
+      console.log(JSON.parse(hasUser))
+      setUser(JSON.parse(hasUser))
+    }
+  }, [hasUser, user])
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -61,7 +72,22 @@ const Header: React.FC = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
+  const handleLogin = (): void => {
+    navigate('/login')
+  }
+
+  const handleLogout = (): void => {
+
+    // Remove o token do armazenamento local (ou sessionStorage, dependendo da sua escolha)
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+    // Opcional: Redirecionar para a página de login
+    navigate('/login');
+
+  }
+
   // const handleMenuClose = () => {
   //   setAnchorEl(null);
   // };
@@ -80,7 +106,7 @@ const Header: React.FC = () => {
   // };
 
   return (
-    <AppBar sx={{backgroundColor:"#5B1B64"}} position="static">
+    <AppBar sx={{ backgroundColor: "#5B1B64" }} position="static">
       <Toolbar>
         {/* Logo */}
         <Typography variant="h6" noWrap component="div">
@@ -88,7 +114,7 @@ const Header: React.FC = () => {
           {/* Shopping dos Espinhara's */}
         </Typography>
 
-          <div style={{ flexGrow: 1 }} />
+        <div style={{ flexGrow: 1 }} />
         {/* Barra de pesquisa */}
         <SearchBar>
           <SearchIconWrapper>
@@ -103,50 +129,86 @@ const Header: React.FC = () => {
 
         {/* Ícone do carrinho */}
         <div>
-        <IconButton size="large" aria-label="mostrar itens no carrinho"  onClick={handleCartOpen} color="inherit">
-          <Badge badgeContent={itemCount} color="error">
-            <ShoppingCart />
-          </Badge>
-        </IconButton>
-        <Cart
-          anchorEl={cartAnchorEl}
-          open={isCartOpen}
-          onClose={handleCartClose}
-        />
+          <IconButton size="large" aria-label="mostrar itens no carrinho" onClick={handleCartOpen} color="inherit">
+            <Badge badgeContent={itemCount} color="error">
+              <ShoppingCart />
+            </Badge>
+          </IconButton>
+          <Cart
+            anchorEl={cartAnchorEl}
+            open={isCartOpen}
+            onClose={handleCartClose}
+          />
         </div>
         {/* Avatar e Menu */}
         <div>
-          <IconButton
-            size="large"
-            edge="end"
-            aria-label="conta do usuário atual"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleMenu}
-            color="inherit"
-          >
-            <Avatar alt="User Avatar" src="/avatar.png" />
-          </IconButton>
-          <Menu
-            id="menu-appbar"
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleClose}>Minha Conta</MenuItem>
-            <MenuItem onClick={handleClose}>Favoritos</MenuItem>
-            <MenuItem onClick={handleClose}>Login</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
-          </Menu>
+          {user?.name ? (
+            <>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label={user?.name ?? 'Usuário'}
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <Avatar alt={user?.name ?? 'Usuário'} src="/avatar.png" />
+              </IconButton><Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>Minha Conta</MenuItem>
+                <MenuItem onClick={handleClose}>Favoritos</MenuItem>
+                <MenuItem onClick={handleLogin}>Login</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </>
+          ) : (
+            <>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label={'Usuário'}
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <Avatar alt={'Usuário'} src="/avatar.png" />
+              </IconButton><Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                {/* <MenuItem onClick={handleClose}>Minha Conta</MenuItem>
+                <MenuItem onClick={handleClose}>Favoritos</MenuItem> */}
+                <MenuItem onClick={handleLogin}>Login</MenuItem>
+                {/* <MenuItem onClick={handleLogout}>Logout</MenuItem> */}
+              </Menu>
+            </>
+          )}
         </div>
       </Toolbar>
     </AppBar>

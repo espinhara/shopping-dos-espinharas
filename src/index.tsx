@@ -10,6 +10,9 @@ import AdminProduct from './components/Admin/Product';
 import ProductsTable from './components/Admin/ProductsTable';
 import ProductPurchasePage from './components/ProductPurchasePage';
 import SalesTable from './components/Admin/SalesTable';
+import LoginPage from './pages/Login';
+import Register from './pages/Register';
+import { AdminPage } from './pages/Admin';
 
 const rootElement = document.getElementById('root');
 if (rootElement) {
@@ -21,11 +24,14 @@ if (rootElement) {
           <Routes>
             <Route path='/' element={
               <App />
-            }/>
-            <Route path='/admin/product' element={<AdminProduct/>} />
-            <Route path='/admin/products' element={<ProductsTable/>} />
+            } />
+            <Route path='/admin' element={<AdminPage />} />
+            <Route path='/admin/product' element={<AdminProduct />} />
+            <Route path='/admin/products' element={<ProductsTable />} />
             <Route path="/admin/sales" element={<SalesTable />} />
             <Route path="/product/:id" element={<ProductPurchasePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </Router>
       </Provider>
