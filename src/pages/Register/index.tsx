@@ -2,7 +2,6 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
 import {
   Box,
   Button,
@@ -12,17 +11,13 @@ import {
   Container,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../../providers/api';
+import { RegisterFormValues } from '../../interfaces/registerFormValues';
 
-interface RegisterFormValues {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
-  const baseURI = 'http://localhost:5000';
   const formik = useFormik<RegisterFormValues>({
     initialValues: {
       name: '',
@@ -46,7 +41,7 @@ const Register: React.FC = () => {
     }),
     onSubmit: async (values) => {
       try {
-        await axios.post(`${baseURI}/api/auth/register`, values); // Substitua com a URL do seu endpoint
+        await api.post(`auth/register`, values);
         alert('Cadastro realizado com sucesso!');
         navigate('/login')
       } catch (error) {

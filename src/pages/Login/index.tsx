@@ -5,7 +5,7 @@ import { Box, Link, Typography, Container } from '@mui/material';
 import { LoginValues } from '../../interfaces/login';
 import LoginFields from './LoginFields';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { api } from '../../providers/api';
 
 // Validação com Yup
 const validationSchema = Yup.object().shape({
@@ -18,11 +18,10 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginPage: React.FC = () => {
-  const baseURI = 'http://localhost:5000';
   const navigate = useNavigate();
   const handleLogin = async (values: LoginValues) => {
     try {
-      const response = await axios.post(`${baseURI}/api/auth/login`, values)
+      const response = await api.post(`auth/login`, values)
 
       if (response.status === 200) {
         const data = await response.data;
@@ -31,7 +30,9 @@ const LoginPage: React.FC = () => {
         localStorage.setItem('user', JSON.stringify(data?.user))
         // Redirecionar ou salvar o token de autenticação
         if (data?.user && data?.user?.userType === 'admin') {
-          navigate('/admin')
+          navigate('/admin', {
+            state: { userType: data.user.userType }
+          })
           return
         }
         navigate('/')

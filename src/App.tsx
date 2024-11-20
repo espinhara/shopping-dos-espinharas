@@ -2,17 +2,15 @@ import React, { useEffect, useState } from 'react';
 
 import ProductList from './components/ProductList';
 import Header from './components/Header';
-import axios from 'axios';
 import { Product } from './interfaces/product';
-const base_url = 'http://localhost:5000'
+import { api } from './providers/api';
 
 const App: React.FC = () => {
-   // Função para buscar os produtos do backend
-   
   const [products, setProducts] = useState<Product[]>([]);
-   const fetchProducts = async () => {
+  // Função para buscar os produtos do backend
+  const fetchProducts = async () => {
     try {
-      const response = await axios.get(base_url +'/api/products');
+      const response = await api.get('products');
       setProducts(response.data);
       // setFilteredProducts(response.data); // Inicializa a lista filtrada
     } catch (error) {
@@ -26,12 +24,12 @@ const App: React.FC = () => {
   }, []);
   return (
     <div style={{
-      
+
     }} className="App">
       <Header />
-      <div style={{ margin: 10}}>
-      <h1>Produtos em Destaque</h1>
-      <ProductList products={products} />
+      <div style={{ margin: 10 }}>
+        <h1>Produtos em Destaque</h1>
+        <ProductList products={products} />
 
       </div>
     </div>

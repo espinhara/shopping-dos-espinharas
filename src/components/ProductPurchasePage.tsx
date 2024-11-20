@@ -1,7 +1,6 @@
 // frontend/src/pages/ProductPurchasePage.tsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import {
   Box,
   Typography,
@@ -27,16 +26,7 @@ import { useDispatch } from 'react-redux';
 import { ArrowBack, ArrowForward, Close, ShoppingCart } from '@mui/icons-material';
 import { Product } from '../interfaces/product';
 import Header from './Header';
-
-// interface Product {
-//   _id: string;
-//   name: string;
-//   description: string;
-//   price: number;
-//   quantity: number;
-//   images: string[];
-// }
-const base_url = 'http://localhost:5000'
+import { api } from '../providers/api';
 
 const ProductPurchasePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -65,7 +55,7 @@ const ProductPurchasePage: React.FC = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`${base_url}/api/products/${id}`);
+        const response = await api.get(`products/${id}`);
         setProduct(response.data);
         setLoading(false);
       } catch (error) {
@@ -138,7 +128,7 @@ const ProductPurchasePage: React.FC = () => {
 
     // Salvar venda no banco
     try {
-      await axios.post(base_url + '/api/sales', {
+      await api.post('sales', {
         products: [
           {
             productId: product?._id,
@@ -186,7 +176,7 @@ const ProductPurchasePage: React.FC = () => {
             <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto' }}>
               {product.imageUrls.map((image, index) => (
                 <CardMedia
-                  key={product._id}
+                  key={index}
                   component="img"
                   image={image}
                   onMouseEnter={() => handleImageHover(image)}
