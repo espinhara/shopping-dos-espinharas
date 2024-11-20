@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import Cart from './Cart';
 import { useNavigate } from 'react-router-dom';
+import { User } from '../interfaces/user';
 const SearchBar = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -51,7 +52,7 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [cartAnchorEl, setCartAnchorEl] = useState<null | HTMLElement>(null);
-  const [user, setUser] = useState<null | { name: string } | any>(null)
+  const [user, setUser] = useState<User | null>(null);
   // const isMenuOpen = Boolean(anchorEl);
   const isCartOpen = Boolean(cartAnchorEl);
   const items = useSelector((state: RootState) => state.cart.items);
@@ -82,7 +83,7 @@ const Header: React.FC = () => {
     // Remove o token do armazenamento local (ou sessionStorage, dependendo da sua escolha)
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-
+    localStorage.clear();
     // Opcional: Redirecionar para a página de login
     navigate('/login');
 
@@ -110,7 +111,9 @@ const Header: React.FC = () => {
       <Toolbar>
         {/* Logo */}
         <Typography variant="h6" noWrap component="div">
-          <img src={logo} alt="Logo" style={{ height: '45px' }} />
+          <img
+            onClick={() => navigate('/')}
+            src={logo} alt="Logo" style={{ height: '45px', cursor: 'pointer' }} />
           {/* Shopping dos Espinhara's */}
         </Typography>
 
