@@ -1,8 +1,8 @@
-import React, { useState,  } from 'react';
-import { TextField,IconButton, Button, Grid, Typography, Box } from '@mui/material';
-import axios from 'axios';
+import React, { useState, } from 'react';
+import { TextField, IconButton, Button, Grid, Typography, Box } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { api } from '../../../providers/api';
 interface Product {
   name: string;
   description: string;
@@ -12,7 +12,6 @@ interface Product {
 }
 
 const AdminProduct: React.FC = () => {
-  const navigate = useNavigate()
   const [images, setImages] = useState<File[]>([]);
   const [product, setProduct] = useState<Product>({
     name: '',
@@ -39,7 +38,7 @@ const AdminProduct: React.FC = () => {
       // Converter FileList em array e adicionar à fila de imagens
       const filesArray = Array.from(e.target.files);
       setImages((prevImages) => [...prevImages, ...filesArray]);
-      setProduct({...product, images: Array.from(e.target.files).slice(0, 4)})
+      setProduct({ ...product, images: Array.from(e.target.files).slice(0, 4) })
     }
   };
 
@@ -50,26 +49,26 @@ const AdminProduct: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     const formData = new FormData();
     formData.append('name', product.name);
     formData.append('description', product.description);
     formData.append('price', product.price.toString());
     formData.append('quantity', product.quantity.toString());
-    
+
     // Adiciona as imagens ao formData
     product.images.forEach((image) => {
       formData.append('images', image);
     });
-  
+
     try {
-      const response = await axios.post('http://localhost:5000/api/products', formData, {
+      const response = await api.post('products', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
       console.log('Produto cadastrado com sucesso:', response.data);
-      navigate('/admin/products', {replace: true})
+      window.history.back()
     } catch (error) {
       console.error('Erro ao cadastrar produto:', error);
     }
@@ -77,7 +76,9 @@ const AdminProduct: React.FC = () => {
 
   return (
     <Box sx={{ maxWidth: 600, margin: 'auto', padding: 2 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" sx={{
+        color: '#5B1B64'
+      }} gutterBottom>
         Cadastrar Produto
       </Typography>
       <form onSubmit={handleSubmit}>
@@ -143,7 +144,7 @@ const AdminProduct: React.FC = () => {
                 onChange={handleImageUpload}
                 multiple
                 hidden
-                // onChange={handleImageChange}
+              // onChange={handleImageChange}
               />
             </Button>
           </Grid>

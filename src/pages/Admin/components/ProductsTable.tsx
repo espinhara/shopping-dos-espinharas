@@ -1,6 +1,5 @@
-// frontend/src/components/ProductTableEditable.tsx
+// src/pages/Admin/components/ProductTable.tsx
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import {
   Table,
   TableBody,
@@ -22,12 +21,12 @@ import { useNavigate } from 'react-router-dom';
 
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
-import { Product } from '../../interfaces/product';
+import { Product } from '../../../interfaces/product';
+import { api } from '../../../providers/api';
 
 const ProductsTable: React.FC = () => {
   const navigate = useNavigate()
   const [products, setProducts] = useState<Product[]>([]);
-  const base_url = 'http://localhost:5000'
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [page, setPage] = useState(0); // Página atual
@@ -37,7 +36,7 @@ const ProductsTable: React.FC = () => {
   // Função para buscar os produtos do backend
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(base_url +'/api/products/list');
+      const response = await api.get('products/list');
       setProducts(response.data);
       setFilteredProducts(response.data); // Inicializa a lista filtrada
     } catch (error) {
@@ -60,17 +59,29 @@ const ProductsTable: React.FC = () => {
       prevProducts.map((product) =>
         product._id === productId ? { ...product, [fieldName]: value } : product
       )
-    ) 
+    )
   };
-  
+
   // Função para salvar as alterações de um produto no backend
   const handleSaveProduct = async (product: Product) => {
     try {
-      await axios.put(base_url + `/api/products/${product._id}`, product);
+      await api.put(`products/${product._id}`, product);
       alert('Produto atualizado com sucesso!');
     } catch (error) {
+      window.location.reload();
       console.error('Erro ao atualizar produto:', error);
       alert('Erro ao atualizar produto.');
+    }
+  };
+  // Função para salvar as alterações de um produto no backend
+  const handleDeleteProduct = async (product: Product) => {
+    try {
+      await api.delete(`products/${product._id}`);
+      alert('Produto deletado com sucesso!');
+      window.location.reload();
+    } catch (error) {
+      console.error('Erro ao deletar produto:', error);
+      alert('Erro ao deletar produto.');
     }
   };
 
@@ -90,8 +101,8 @@ const ProductsTable: React.FC = () => {
     setPage(0); // Reinicia para a primeira página
   };
 
-   // Função de pesquisa
-   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // Função de pesquisa
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term);
     setFilteredProducts(
@@ -109,52 +120,54 @@ const ProductsTable: React.FC = () => {
   }, []);
 
   return (
-      <TableContainer component={Paper}>
-        <Box  display="flex" justifyContent="space-between" alignItems="center" padding={2}>
-          <Typography variant="h6" gutterBottom>
-            Listagem de Produtos
-          </Typography>
-          <Button
-              variant="contained"
-              color="primary"
-              startIcon={<AddIcon />}
-              onClick={() => navigate('/admin/product', {replace: true})}
-            >
-              Adicionar Produto
-          </Button>
-        </Box>
+    <TableContainer component={Paper}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" padding={2}>
+        <Typography variant="h6" sx={{
+          color: '#5B1B64'
+        }} gutterBottom>
+          Listagem de Produtos
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+          onClick={() => navigate('/admin/product', { replace: true })}
+        >
+          Adicionar Produto
+        </Button>
+      </Box>
 
-        {/* Barra de pesquisa */}
-        <Box padding={2}>
-          <TextField
-            fullWidth
-            placeholder="Pesquisar produto por nome, descrição ou ID"
-            value={searchTerm}
-            onChange={handleSearch}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Box>
+      {/* Barra de pesquisa */}
+      <Box padding={2}>
+        <TextField
+          fullWidth
+          placeholder="Pesquisar produto por nome, descrição ou ID"
+          value={searchTerm}
+          onChange={handleSearch}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
 
-        <Table aria-label="tabela de produtos">
-          <TableHead>
-            <TableRow>
-              <TableCell>Ativo</TableCell>
-              <TableCell>Nome</TableCell>
-              <TableCell>Descrição</TableCell>
-              <TableCell>Preço</TableCell>
-              <TableCell>Quantidade em Estoque</TableCell>
-              <TableCell>Imagens</TableCell>
-              <TableCell>Ações</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredProducts
+      <Table aria-label="tabela de produtos">
+        <TableHead>
+          <TableRow>
+            <TableCell>Ativo</TableCell>
+            <TableCell>Nome</TableCell>
+            <TableCell>Descrição</TableCell>
+            <TableCell>Preço</TableCell>
+            <TableCell>Quantidade em Estoque</TableCell>
+            <TableCell>Imagens</TableCell>
+            <TableCell>Ações</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {filteredProducts
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((product) => (
               <TableRow key={product._id}>
@@ -213,30 +226,39 @@ const ProductsTable: React.FC = () => {
                   </Box>
                 </TableCell>
                 <TableCell>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleSaveProduct(product)}
-                  >
-                    Salvar
-                  </Button>
+                  <Box display="flex" gap={1}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleSaveProduct(product)}
+                    >
+                      Salvar
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => handleDeleteProduct(product)}
+                    >
+                      Excluir
+                    </Button>
+                  </Box>
                 </TableCell>
               </TableRow>
             ))}
-          </TableBody>
-        </Table>
-        <TablePagination
-          labelRowsPerPage='Linhas por página'
-          component="div"
-          count={filteredProducts.length} // Total de produtos
-          page={page} // Página atual
-          onPageChange={handleChangePage}
-          rowsPerPage={rowsPerPage} // Quantidade de registros por página
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>
+        </TableBody>
+      </Table>
+      <TablePagination
+        labelRowsPerPage='Linhas por página'
+        component="div"
+        count={filteredProducts.length} // Total de produtos
+        page={page} // Página atual
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage} // Quantidade de registros por página
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </TableContainer>
 
-    
+
   );
 };
 
