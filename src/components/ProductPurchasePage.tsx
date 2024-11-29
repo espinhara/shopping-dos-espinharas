@@ -8,7 +8,6 @@ import {
   Grid,
   CardMedia,
   Paper,
-  CircularProgress,
   IconButton,
   Divider,
   Modal,
@@ -27,6 +26,7 @@ import { ArrowBack, ArrowForward, Close, ShoppingCart } from '@mui/icons-materia
 import { Product } from '../interfaces/product';
 import Header from './Header';
 import { api } from '../providers/api';
+import { LoadingApp } from './Loading';
 
 const ProductPurchasePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -107,7 +107,7 @@ const ProductPurchasePage: React.FC = () => {
     setOpenImageModal(false);
     setSelectedImage(undefined);
   }
-  if (loading) return <CircularProgress />;
+  if (loading) return <LoadingApp />;
 
   if (!product) return <Typography>Produto não encontrado</Typography>;
 
