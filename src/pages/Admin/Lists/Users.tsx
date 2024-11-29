@@ -23,8 +23,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import { User } from '../../../interfaces/user';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../../providers/api';
+import { IListUsers } from '../../../interfaces/listUsers';
 
-const ListUsers: React.FC = () => {
+const ListUsers: React.FC<IListUsers> = ({ onHandleNewUser }) => {
   const navigate = useNavigate()
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
@@ -40,6 +41,10 @@ const ListUsers: React.FC = () => {
       console.error('Erro ao buscar usuários:', error);
     }
   };
+
+  const handleNewUser = () => {
+    onHandleNewUser()
+  }
 
   const handleFieldChange = (
     userId: string,
@@ -110,7 +115,7 @@ const ListUsers: React.FC = () => {
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
-          onClick={() => navigate('/admin/user', { replace: true })}
+          onClick={handleNewUser}
         >
           Adicionar Usuário
         </Button>
