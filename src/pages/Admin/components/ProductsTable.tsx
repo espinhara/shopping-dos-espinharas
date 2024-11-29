@@ -23,8 +23,9 @@ import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import { Product } from '../../../interfaces/product';
 import { api } from '../../../providers/api';
+import { IProductsTable } from '../../../interfaces/productsTable';
 
-const ProductsTable: React.FC = () => {
+const ProductsTable: React.FC<IProductsTable> = ({ onHandleNewProduct }) => {
   const navigate = useNavigate()
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -32,7 +33,9 @@ const ProductsTable: React.FC = () => {
   const [page, setPage] = useState(0); // Página atual
   const [rowsPerPage, setRowsPerPage] = useState(10); // Quantidade de registros por página
 
-
+  const handleNewProduct = () => {
+    onHandleNewProduct()
+  }
   // Função para buscar os produtos do backend
   const fetchProducts = async () => {
     try {
@@ -131,7 +134,7 @@ const ProductsTable: React.FC = () => {
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
-          onClick={() => navigate('/admin/product', { replace: true })}
+          onClick={() => handleNewProduct()}
         >
           Adicionar Produto
         </Button>
