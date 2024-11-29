@@ -10,9 +10,10 @@ interface ProductCardProps {
   name: string;
   price: number;
   imageUrl: string;
+  quantity: number;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, imageUrl }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, imageUrl, quantity }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleBuyNow = () => {
@@ -21,7 +22,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, imageUrl }) 
   const handleAddToCart = () => {
     dispatch(addItemToCart({
       id, name, price, imageUrl,
-      quantity: 0
+      quantity: 0,
+      stock: quantity,
     }));
   };
   return (
@@ -40,7 +42,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, imageUrl }) 
         <Button sx={{
           marginRight: 2
         }} onClick={handleAddToCart} variant="contained" color="primary">
-          Adicionar  <ShoppingCart/>
+          Adicionar  <ShoppingCart />
         </Button>
         <Button variant="contained" onClick={handleBuyNow} color="success">
           Comprar

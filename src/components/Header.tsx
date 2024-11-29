@@ -110,11 +110,16 @@ const Header: React.FC = () => {
     <AppBar sx={{ backgroundColor: "#5B1B64" }} position="static">
       <Toolbar>
         {/* Logo */}
-        <Typography variant="h6" noWrap component="div">
-          <img
-            onClick={() => navigate('/')}
-            src={logo} alt="Logo" style={{ height: '45px', cursor: 'pointer' }} />
+        <Typography
+          onClick={() => navigate('/')}
+          variant="h6"
+          noWrap
+          component="div"
+        >
           {/* Shopping dos Espinhara's */}
+          <img
+            style={{ height: '45px', cursor: 'pointer' }}
+            src={logo} alt="Logo" />
         </Typography>
 
         <div style={{ flexGrow: 1 }} />

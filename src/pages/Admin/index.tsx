@@ -1,29 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { Box, AppBar, Toolbar, Typography, CssBaseline, Drawer, List, ListItem, ListItemText, IconButton, Avatar, MenuItem, Menu, Skeleton } from '@mui/material';
+import { Box, AppBar, Toolbar, Typography, CssBaseline, Drawer, List, ListItem, IconButton, Avatar, MenuItem, Menu, Skeleton } from '@mui/material';
 import Dashboard from './components/Dashboard';
 import RegisterUsers from './Register/Users';
 import Product from './components/Product';
 import ListUsers from './Lists/Users';
 import ProductList from './components/ProductsTable';
-import { RootState } from '../../store';
+// import { RootState } from '../../store';
 import logo from '../../assets/images/logo.png';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../interfaces/user';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import SalesTable from './components/SalesTable';
 
-const drawerWidth = 240;
+const drawerWidth = 205;
 
 const AdminPage: React.FC<{ userType?: string }> = ({ userType }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [cartAnchorEl, setCartAnchorEl] = useState<null | HTMLElement>(null);
+  // const [cartAnchorEl, setCartAnchorEl] = useState<null | HTMLElement>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true); // Estado para controlar o carregamento
-  const isCartOpen = Boolean(cartAnchorEl);
-  const items = useSelector((state: RootState) => state.cart.items);
-  const itemCount = items.reduce((total, item) => total + item.quantity, 0);
+  // const isCartOpen = Boolean(cartAnchorEl);
+  // const items = useSelector((state: RootState) => state.cart.items);
+  // const itemCount = items.reduce((total, item) => total + item.quantity, 0);
   const hasUser = localStorage.getItem('user')
-
+  const handleNewProduct = () => {
+    setSelectedPage('Cadastro de Produtos')
+  }
+  const handleNewUser = () => {
+    setSelectedPage('Cadastro de Usuários')
+  }
   useEffect(() => {
     if (hasUser && !user) {
       setUser(JSON.parse(hasUser));
@@ -89,9 +94,9 @@ const AdminPage: React.FC<{ userType?: string }> = ({ userType }) => {
       case 'Cadastro de Produtos':
         return <Product />;
       case 'Lista de Usuários':
-        return <ListUsers />;
+        return <ListUsers onHandleNewUser={handleNewUser} />;
       case 'Lista de Produtos':
-        return <ProductList />;
+        return <ProductList onHandleNewProduct={handleNewProduct} />;
       case 'Lista de Vendas':
         return <SalesTable />;
       default:
@@ -100,7 +105,7 @@ const AdminPage: React.FC<{ userType?: string }> = ({ userType }) => {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', }}>
       <CssBaseline />
       <AppBar position="fixed" sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}>
         <Toolbar sx={{ backgroundColor: '#5B1B64', justifyContent: 'space-between' }}>
