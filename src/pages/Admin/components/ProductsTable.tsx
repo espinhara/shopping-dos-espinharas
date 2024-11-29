@@ -17,7 +17,7 @@ import {
   InputAdornment,
 } from '@mui/material';
 
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
@@ -26,7 +26,7 @@ import { api } from '../../../providers/api';
 import { IProductsTable } from '../../../interfaces/productsTable';
 
 const ProductsTable: React.FC<IProductsTable> = ({ onHandleNewProduct }) => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');

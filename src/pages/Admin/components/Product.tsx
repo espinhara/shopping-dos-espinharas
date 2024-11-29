@@ -1,7 +1,7 @@
 import React, { useState, } from 'react';
 import { TextField, IconButton, Button, Grid, Typography, Box } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import { api } from '../../../providers/api';
 interface Product {
   name: string;

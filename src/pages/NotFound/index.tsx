@@ -1,5 +1,5 @@
 // src/pages/NotFound.js
-import React from 'react';
+// import React from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
@@ -30,19 +30,19 @@ const Description = styled(Typography)`
   margin: 1rem 0;
 `;
 
-const StyledButton = styled(Button)`
-  background-color: #df9c10; /* Amarelo */
-  color: #02617d; /* Azul */
-  font-size: 1.25rem;
-  font-weight: bold;
-  text-decoration: none;
-  border-radius: 5px;
-  margin-top: 2rem;
+// const StyledButton = styled(Button)`
+//   background-color: #df9c10; /* Amarelo */
+//   color: #02617d; /* Azul */
+//   font-size: 1.25rem;
+//   font-weight: bold;
+//   text-decoration: none;
+//   border-radius: 5px;
+//   margin-top: 2rem;
 
-  &:hover {
-    background-color: #df9c10; /* Amarelo mais escuro */
-  }
-`;
+//   &:hover {
+//     background-color: #df9c10; /* Amarelo mais escuro */
+//   }
+// `;
 
 
 const NotFound = () => {

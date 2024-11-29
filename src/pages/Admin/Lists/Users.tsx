@@ -21,12 +21,12 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import { User } from '../../../interfaces/user';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { api } from '../../../providers/api';
 import { IListUsers } from '../../../interfaces/listUsers';
 
 const ListUsers: React.FC<IListUsers> = ({ onHandleNewUser }) => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
