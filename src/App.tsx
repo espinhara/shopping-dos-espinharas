@@ -4,24 +4,28 @@ import ProductList from './components/ProductList';
 import Header from './components/Header';
 import { Product } from './interfaces/product';
 import { api } from './providers/api';
+import { LoadingApp } from './components/Loading';
 
 const App: React.FC = () => {
+  const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState<Product[]>([]);
   // Função para buscar os produtos do backend
   const fetchProducts = async () => {
     try {
       const response = await api.get('products');
       setProducts(response.data);
+      setLoading(false);
       // setFilteredProducts(response.data); // Inicializa a lista filtrada
     } catch (error) {
+      setLoading(false);
       console.error('Erro ao buscar produtos:', error);
     }
   };
-
   // Carregar os produtos ao montar o componente
   useEffect(() => {
     fetchProducts();
   }, []);
+  if (loading) return <LoadingApp />;
   return (
     <div style={{
 
