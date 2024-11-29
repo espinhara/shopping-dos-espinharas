@@ -68,8 +68,16 @@ const ProductPurchasePage: React.FC = () => {
 
   const handleAddToCart = () => {
     if (product) {
-      dispatch(addItemToCart({ id: product._id, name: product.name, price: product.price, imageUrl: product.imageUrls[0], quantity }));
+      let stock = product.quantity - quantity
+      if (stock > 0) {
+        dispatch(addItemToCart({
+          id: product._id, name: product.name, price: product.price, imageUrl: product.imageUrls[0], quantity,
+          stock: stock,
+        }));
+        return;
+      }
     }
+    alert('Produto fora do estoque!')
   };
 
   const handleBack = () => {
@@ -124,11 +132,11 @@ const ProductPurchasePage: React.FC = () => {
     if (!validateFields()) return;
 
     const whatsappNumber = "5511932337896";
-    const message = `Olá, quero comprar o produto: ${product?.name}%0AQuantidade: ${quantity}%0APreço unitário: R$${product?.price}%0ASubtotal: R$${subtotal}%0ATotal: R$${total}%0AParcelado em: ${installments}x de R$${installmentValue}%0APagamento: ${toSafePayment(paymentMethod)}%0ANome do cliente: ${customerName}%0ANome para retirada: ${pickupName}`;
+    const message = `Olá, quero comprar o produto: ${product?.name}%0AQuantidade: ${quantity}%0APreço unitário: R$${product?.price}%0ASubtotal: R$${subtotal.toFixed(2)}%0ATotal: R$${total}%0AParcelado em: ${installments}x de R$${installmentValue}%0APagamento: ${toSafePayment(paymentMethod)}%0ANome do cliente: ${customerName}%0ANome para retirada: ${pickupName}`;
 
     // Salvar venda no banco
     try {
-      await api.post('sales', {
+      await api.post(`sales?timestamp=${new Date().getTime()}`, {
         products: [
           {
             productId: product?._id,

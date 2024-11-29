@@ -26,16 +26,16 @@ const LoginPage: React.FC = () => {
       if (response.status === 200) {
         const data = await response.data;
         console.log('Login bem-sucedido:', data);
-        localStorage.setItem('token', data?.token)
+        localStorage.clear();
+        sessionStorage.clear();
+        localStorage.token = data?.token
         localStorage.setItem('user', JSON.stringify(data?.user))
         // Redirecionar ou salvar o token de autenticação
-        if (data?.user && data?.user?.userType === 'admin') {
-          navigate('/admin', {
-            state: { userType: data.user.userType }
-          })
+        if (data?.user && data.user?.userType === 'admin') {
+          window.location.href = "/admin"
           return
         }
-        navigate('/')
+        window.location.href = "/"
       } else {
         console.error('Erro no login');
       }
