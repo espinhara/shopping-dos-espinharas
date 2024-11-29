@@ -32,7 +32,8 @@ const LoginPage: React.FC = () => {
         localStorage.setItem('user', JSON.stringify(data?.user))
         // Redirecionar ou salvar o token de autenticação
         if (data?.user && data.user?.userType === 'admin') {
-          window.location.href = "/admin"
+          // window.location.href = "/admin"
+          navigate('/admin')
           return
         }
         window.location.href = "/"
