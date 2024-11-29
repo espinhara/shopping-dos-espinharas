@@ -1,8 +1,9 @@
 // src/components/Cart.tsx
 import React from 'react';
-import { Menu, MenuItem, ListItemText, Divider  } from '@mui/material';
+import { Menu, MenuItem, ListItemText, Divider } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
+import { useNavigate } from 'react-router-dom';
 
 interface CartProps {
   anchorEl: null | HTMLElement;
@@ -11,6 +12,7 @@ interface CartProps {
 }
 
 const Cart: React.FC<CartProps> = ({ anchorEl, open, onClose }) => {
+  const navigate = useNavigate()
   const items = useSelector((state: RootState) => state.cart.items);
 
   return (
@@ -28,8 +30,8 @@ const Cart: React.FC<CartProps> = ({ anchorEl, open, onClose }) => {
       {items.length > 0 ? (
         <>
           {items.map(item => (
-            <MenuItem key={item.id}>
-              
+            <MenuItem onClick={() => navigate('/cart')} key={item.id}>
+
               <ListItemText primary={item.name} secondary={`Quantidade: ${item.quantity}`} />
             </MenuItem>
           ))}
