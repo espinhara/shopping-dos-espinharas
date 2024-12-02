@@ -105,7 +105,7 @@ const AdminPage: React.FC<{ userType?: string }> = ({ userType }) => {
   };
 
   return (
-    <Box sx={{ display: 'flex', }}>
+    <Box sx={{ display: 'flex', height: "100%", "@media (max-height: 100vh)": { height: "120vh" }, }}>
       <CssBaseline />
       <AppBar position="fixed" sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}>
         <Toolbar sx={{ backgroundColor: '#5B1B64', justifyContent: 'space-between' }}>

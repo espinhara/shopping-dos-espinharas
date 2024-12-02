@@ -78,7 +78,13 @@ const SalesTable: React.FC = () => {
   }, []);
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer
+      sx={{
+        maxHeight: '950px', // Altura máxima fixa da tabela
+        overflowY: 'auto', // Rolagem vertical ativada se necessário
+        overflowX: 'hidden', // Evita rolagem horizontal indesejada
+      }}
+      component={Paper}>
       <Box display="flex" justifyContent="space-between" alignItems="center" padding={2}>
         <Typography variant="h6" sx={{
           color: '#5B1B64'

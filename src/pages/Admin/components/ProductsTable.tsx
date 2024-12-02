@@ -123,7 +123,8 @@ const ProductsTable: React.FC<IProductsTable> = ({ onHandleNewProduct }) => {
   }, []);
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer
+      component={Paper}>
       <Box display="flex" justifyContent="space-between" alignItems="center" padding={2}>
         <Typography variant="h6" sx={{
           color: '#5B1B64'

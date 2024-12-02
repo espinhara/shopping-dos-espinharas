@@ -126,7 +126,13 @@ const Dashboard: React.FC = () => {
     fetchProductsTopLeastPerSale();
   }, [])
   return (
-    <Box>
+    <Box
+      sx={{
+        maxHeight: '950px', // Altura máxima fixa da tabela
+        overflowY: 'auto', // Rolagem vertical ativada se necessário
+        overflowX: 'hidden', // Evita rolagem horizontal indesejada
+      }}
+    >
       <Typography variant="h4" sx={{
         color: '#5B1B64',
         fontWeight: 'bold',

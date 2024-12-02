@@ -62,7 +62,8 @@ const LoginPage: React.FC = () => {
           marginTop: 8,
           padding: 4,
           boxShadow: 3,
-          borderRadius: 2
+          borderRadius: 2,
+          marginBottom: 24,
         }}
       >
         <Typography component="h1" variant="h5">
