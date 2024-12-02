@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import ProductList from './components/ProductList';
-import Header from './components/Header';
 import { Product } from './interfaces/product';
 import { api } from './providers/api';
 import { LoadingApp } from './components/Loading';
