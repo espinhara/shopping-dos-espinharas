@@ -30,7 +30,6 @@ const App: React.FC = () => {
     <div style={{
 
     }} className="App">
-      <Header />
       <div style={{ margin: 10 }}>
         <h1>Produtos em Destaque</h1>
         <ProductList products={products} />
