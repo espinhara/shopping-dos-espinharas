@@ -6,7 +6,6 @@ import logo from '../assets/images/logo.png'
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import Cart from './Cart';
-import { useNavigate } from 'react-router-dom';
 import { User } from '../interfaces/user';
 const SearchBar = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -48,8 +47,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const Header: React.FC = () => {
-  const navigate = useNavigate();
+const Header: React.FC<{ onSearch: (search: string) => void }> = ({ onSearch }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [cartAnchorEl, setCartAnchorEl] = useState<null | HTMLElement>(null);
   const [user, setUser] = useState<User | null>(null);
@@ -75,23 +73,16 @@ const Header: React.FC = () => {
   };
 
   const handleLogin = (): void => {
-    navigate('/login')
+    window.location.href = '/login'
   }
 
   const handleLogout = (): void => {
-
-    // Remove o token do armazenamento local (ou sessionStorage, dependendo da sua escolha)
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.clear();
-    // Opcional: Redirecionar para a página de login
-    navigate('/login');
+    window.location.href = '/login'
 
   }
-
-  // const handleMenuClose = () => {
-  //   setAnchorEl(null);
-  // };
 
   const handleCartOpen = (event: React.MouseEvent<HTMLElement>) => {
     setCartAnchorEl(event.currentTarget);
@@ -101,17 +92,19 @@ const Header: React.FC = () => {
     setCartAnchorEl(null);
   };
 
-  // const handleLogout = () => {
-  //   // Implement logout logic here
-  //   handleMenuClose();
-  // };
+  const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    event.preventDefault();
+    if (event.target.value.length > 3) {
+      onSearch(event.target.value.toString())
+    }
+  }
 
   return (
     <AppBar sx={{ backgroundColor: "#5B1B64" }} position="static">
       <Toolbar>
         {/* Logo */}
         <Typography
-          onClick={() => navigate('/')}
+          onClick={() => window.location.href = '/'}
           variant="h6"
           noWrap
           component="div"
@@ -129,6 +122,8 @@ const Header: React.FC = () => {
             <Search />
           </SearchIconWrapper>
           <StyledInputBase
+            // value={search}
+            onChange={(event) => handleChangeSearch(event)}
             placeholder="Buscar…"
             inputProps={{ 'aria-label': 'search' }}
           />
