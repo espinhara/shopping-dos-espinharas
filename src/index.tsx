@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -13,6 +13,8 @@ import AdminPage from './pages/Admin';
 import NotFound from './pages/NotFound';
 import CartPage from './pages/Cart';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import Footer from './components/Footer';
+import Header from './components/Header';
 
 // Crie uma instância de QueryClient
 const queryClient = new QueryClient({
@@ -25,12 +27,17 @@ const queryClient = new QueryClient({
 });
 const rootElement = document.getElementById('root');
 if (rootElement) {
+  const handleSearch = (term: string) => {
+    console.log(term)
+  }
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-
         <Provider store={store}>
+          {
+            <Header onSearch={handleSearch} />
+          }
           <Router>
             <Routes>
               <Route path='/' element={
@@ -47,6 +54,8 @@ if (rootElement) {
           </Router>
         </Provider>
       </QueryClientProvider>
+
+      <Footer />
     </React.StrictMode>
   );
 }
