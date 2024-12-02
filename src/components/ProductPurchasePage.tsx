@@ -24,7 +24,6 @@ import { addItemToCart } from '../store/slices/cartSlice';
 import { useDispatch } from 'react-redux';
 import { ArrowBack, ArrowForward, Close, ShoppingCart } from '@mui/icons-material';
 import { Product } from '../interfaces/product';
-import Header from './Header';
 import { api } from '../providers/api';
 import { LoadingApp } from './Loading';
 
@@ -132,7 +131,15 @@ const ProductPurchasePage: React.FC = () => {
     if (!validateFields()) return;
 
     const whatsappNumber = "5511932337896";
-    const message = `Olá, quero comprar o produto: ${product?.name}%0AQuantidade: ${quantity}%0APreço unitário: R$${product?.price}%0ASubtotal: R$${subtotal.toFixed(2)}%0ATotal: R$${total}%0AParcelado em: ${installments}x de R$${installmentValue}%0APagamento: ${toSafePayment(paymentMethod)}%0ANome do cliente: ${customerName}%0ANome para retirada: ${pickupName}`;
+    const message = `Olá, quero comprar o produto: ${product?.name}%0A
+    Quantidade: ${quantity}%0A
+    Preço unitário: R$${product?.price}%0A
+    Subtotal: R$${subtotal.toFixed(2)}%0A
+    Total: R$${total}%0A
+    Parcelado em: ${installments}x de R$${installmentValue}%0A
+    Pagamento: ${toSafePayment(paymentMethod)}%0A
+    Nome do cliente: ${customerName}%0A
+    Nome para retirada: ${pickupName}`;
 
     // Salvar venda no banco
     try {
@@ -176,7 +183,6 @@ const ProductPurchasePage: React.FC = () => {
 
   return (
     <>
-      <Header />
       <Paper sx={{ padding: 4, height: 'auto', marginTop: 4 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={6}>
