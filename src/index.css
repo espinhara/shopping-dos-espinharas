@@ -7,6 +7,38 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Estilo para navegadores baseados em WebKit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 8px;
+  /* Largura da barra */
+  height: 8px;
+  /* Altura da barra para rolagem horizontal */
+}
+
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+  /* Cor do fundo da barra de rolagem */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #5B1B64, #9E57B4);
+  /* Gradiente para a barra */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #4A1050, #8E47A4);
+  /* Gradiente mais escuro ao passar o mouse */
+}
+
+/* Para navegadores Firefox */
+* {
+  scrollbar-width: thin;
+  /* Define a largura da barra como fina */
+  scrollbar-color: linear-gradient(45deg, #5B1B64, #9E57B4) #e0e0e0;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
