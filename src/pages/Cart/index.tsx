@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Box, Typography, Button, IconButton, List, ListItem, ListItemText, Modal, Paper, TextField, FormControl, FormLabel, RadioGroup, Select, MenuItem, FormControlLabel, Radio } from '@mui/material';
+import { Box, Typography, Button, IconButton, List, ListItem, ListItemText, Modal, Paper, TextField, FormControl, FormLabel, RadioGroup, Select, MenuItem, FormControlLabel, Radio, ListItemAvatar, Avatar, Input, styled, InputBase, Grid } from '@mui/material';
 import { RootState } from '../../store';
 import { updateItemQuantity, removeItemFromCart, removeItemsFromCart } from '../../store/slices/cartSlice';
 import { api } from '../../providers/api';
 import { CartItem } from '../../interfaces/cart';
-import { ArrowBack } from '@mui/icons-material';
+import { ArrowBack, RemoveShoppingCart, RemoveShoppingCartSharp, ShoppingCart, ShoppingCartCheckout, ShoppingCartOutlined, ShoppingCartRounded, ShoppingCartSharp } from '@mui/icons-material';
 
 const CartPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -107,76 +107,157 @@ const CartPage: React.FC = () => {
       alert("Erro ao registrar a venda, tente novamente mais tarde.");
     }
   };
-
+  const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    // color: 'inherit',
+    // border: "2",
+    '& .MuiInputBase-input': {
+      // padding: theme.spacing(1, 1, 1, 0),
+      // vertical padding + font size from searchIcon
+      // paddingLeft: `calc(1em + ${theme.spacing(0)})`,
+      transition: theme.transitions.create('width'),
+      // width: '100%',
+      [theme.breakpoints.up('md')]: {
+        width: '2ch',
+      },
+    },
+  }));
   return (
-    <Box sx={{ height: "100%", "@media (max-height: 100vh)": { height: "120vh" }, padding: 3 }}>
-      <Typography variant="h4" sx={{ marginBottom: 2 }}>
+    <Grid
+      container
+      spacing={1}
+      direction="row"
+      alignItems="center"
+      justifyContent="center"
+      sx={{
+        // "@media (max-height: 100vh)": { height: "70vh" },
+        height: "100vh",
+        width: "100%",
+        maxWidth: "800px",
+        margin: "auto",
+        padding: 3,
+      }}
+    >
+      <Typography
+        variant="h4"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          marginTop: 0,
+          marginBottom: 0,
+          width: "100%",
+        }}
+      >
         <IconButton
           aria-label="close"
           onClick={() => window.history.back()}
           sx={{
-            // position: 'absolute',
-            color: 'grey.500',
-
+            marginRight: 1,
+            color: "grey.700",
           }}
         >
           <ArrowBack />
         </IconButton>
         Carrinho
       </Typography>
-      <List>
-        {cartItems.map((item) => (
-          <ListItem
-            key={item.id}
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              borderBottom: '1px solid #ccc',
-            }}
-          >
-            <ListItemText
-              primary={item.name}
-              secondary={`Preço: R$${item.price.toFixed(2)} | Estoque: ${item.stock} | Quantidade: ${item.quantity}\n SubTotal R$${(
-                item.price * item.quantity
-              ).toFixed(2)}`}
-            />
-            <Box>
-              <IconButton onClick={() => handleDecrease(item.id)}>-</IconButton>
-              <IconButton onClick={() => handleIncrease(item.id, item.quantity)}>+</IconButton>
-              <Button onClick={() => handleRemove(item.id)} color="error">
-                Remover
-              </Button>
-            </Box>
-          </ListItem>
-        ))}
-      </List>
-      <Typography variant="h6" sx={{ marginTop: 2 }}>
-        Total: R$
-        {totalAmount.toFixed(2)}
-      </Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        sx={{ marginTop: 2 }}
-        onClick={() => setOpenModal(true)}
-        disabled={cartItems.length === 0}
-      >
-        Finalizar Compra
-      </Button>
+      {cartItems.length === 0 ? (
+        // Mensagem para carrinho vazio
+        <>
+          <Typography variant="h6" sx={{ textAlign: "center", marginTop: 0 }}>
+            Seu carrinho está vazio! Adicione produtos para continuar.
+          </Typography>
+          <RemoveShoppingCart sx={{
+            height: "20vh",
+            width: "20vw"
+          }} />
+        </>
+      ) : (
+        <>
+          <List sx={{
+            width: "100%", overflowY: 'auto',
+            height: "45vh",
+            overflowX: 'auto',
+          }}>
+            {cartItems.map((item) => (
 
+              <ListItem
+                key={item.id}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  borderBottom: "1px solid #ccc",
+                  paddingY: 1,
+                }}
+              >
+                <Grid container>
+
+                  <Grid container>
+                    <ListItemAvatar>
+                      <Avatar src={item.imageUrl} alt={item.name} />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={item.name}
+                      secondary={`Preço: R$${item.price.toFixed(2)} | Estoque: ${item.stock} | Quantidade: ${item.quantity}\nSubtotal: R$${(item.price * item.quantity).toFixed(2)}`} />
+
+                  </Grid>
+                  <Grid container spacing={2} sx={{ marginTop: 1 }}>
+                    <Grid item xs={6} sm={6} textAlign="start">
+                      <Button onClick={() => handleRemove(item.id)} color="error">
+                        Remover
+                      </Button>
+                    </Grid>
+                    <Grid item xs={6} sm={6}>
+                      <Box display="flex" alignItems="center" justifyContent="flex-end">
+                        <IconButton onClick={() => handleDecrease(item.id)}>-</IconButton>
+                        <StyledInputBase
+                          readOnly
+                          value={item.quantity}
+                          sx={{
+                            width: 40,
+                            textAlign: "center",
+                            border: "1px solid #ccc",
+                            borderRadius: 2,
+                            padding: "5px",
+                            marginX: 1,
+                          }} />
+                        <IconButton onClick={() => handleIncrease(item.id, item.quantity)}>+</IconButton>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </ListItem>
+            ))}
+          </List>
+          <div>
+
+            <Typography variant="h6" sx={{ marginTop: 2 }}>
+              Total: R$ {totalAmount.toFixed(2)}
+            </Typography><Button
+              variant="contained"
+              color="primary"
+              sx={{ marginTop: 2, }}
+              onClick={() => setOpenModal(true)}
+              disabled={cartItems.length === 0}
+            >
+              Finalizar Compra
+            </Button>
+          </div>
+        </>
+
+      )}
       {/* Modal de Finalização */}
-      <Modal open={openModal}
-        onClose={() => setOpenModal(false)}>
+      <Modal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+      >
         <Paper
           sx={{
-            maxWidth: '400px',
-            maxHeight: '600px',
+            width: "90%",
+            maxWidth: "500px",
+            maxHeight: "100vh",
+            overflowY: "auto",
             padding: 3,
-            margin: 'auto',
-            marginTop: '10%',
-            overflowY: 'auto', // Rolagem vertical ativada se necessário
-            overflowX: 'hidden', // Evita rolagem horizontal indesejada
-            position: 'relative',
           }}
         >
           <Typography variant="h5" sx={{ marginBottom: 2 }}>
@@ -196,20 +277,27 @@ const CartPage: React.FC = () => {
             onChange={(e) => setPickupName(e.target.value)}
             sx={{ my: 2 }}
           />
-          <List>
+          <List
+            sx={{
+              overflowY: "auto",
+              maxHeight: "20vh",
+            }}
+          >
             {cartItems.map((item) => (
               <ListItem key={item.id}>
                 <ListItemText
                   primary={item.name}
-                  secondary={`Quantidade: ${item.quantity} | SubTotal: R$${(item.price * item.quantity).toFixed(2)}`}
+                  secondary={`Quantidade: ${item.quantity} | Subtotal: R$${(item.price * item.quantity).toFixed(2)}`}
                 />
               </ListItem>
             ))}
           </List>
           <Typography variant="h6" sx={{ marginTop: 2 }}>
-            Total: R${totalAmount.toFixed(2)}
+            Total: R$ {totalAmount.toFixed(2)}
           </Typography>
-          <FormControl component="fieldset" sx={{ mt: 3 }}>
+          <FormControl component="fieldset" sx={{
+            mt: 3,
+          }}>
             <FormLabel component="legend">Método de Pagamento</FormLabel>
             <RadioGroup
               row
@@ -217,11 +305,15 @@ const CartPage: React.FC = () => {
               onChange={(e) => setPaymentMethod(e.target.value as any)}
             >
               <FormControlLabel value="in_sight" control={<Radio />} label="À vista" />
-              <FormControlLabel value="in_installments" control={<Radio />} label="Parcelado em até 3x sem juros" />
+              <FormControlLabel
+                value="in_installments"
+                control={<Radio />}
+                label="Parcelado em até 3x sem juros"
+              />
             </RadioGroup>
           </FormControl>
 
-          {paymentMethod === 'in_installments' && (
+          {paymentMethod === "in_installments" && (
             <Box mt={2}>
               <FormControl fullWidth>
                 <FormLabel>Escolha o número de parcelas</FormLabel>
@@ -236,14 +328,9 @@ const CartPage: React.FC = () => {
                   ))}
                 </Select>
               </FormControl>
-              <Typography variant="body2" sx={{ mt: 2 }}>
-                Valor da Parcela: R${installmentValue}
-              </Typography>
             </Box>
           )}
-          <Typography variant="subtitle1">
-            Valor por Parcela: R${(totalAmount / installments).toFixed(2)}
-          </Typography>
+
           <Button
             variant="contained"
             color="primary"
@@ -257,14 +344,15 @@ const CartPage: React.FC = () => {
             variant="outlined"
             color="secondary"
             fullWidth
-            sx={{ marginTop: 1 }}
+            sx={{ marginTop: 1, marginBottom: 1 }}
             onClick={() => setOpenModal(false)}
           >
             Cancelar
           </Button>
         </Paper>
       </Modal>
-    </Box>
+    </Grid>
+
   );
 };
 
