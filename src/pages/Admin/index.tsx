@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { User } from '../../interfaces/user';
 // import { useSelector } from 'react-redux';
 import SalesTable from './components/SalesTable';
+import BarcodeScanner from './components/BarcodeScanner';
 
 const drawerWidth = 205;
 
@@ -99,6 +100,8 @@ const AdminPage: React.FC<{ userType?: string }> = ({ userType }) => {
         return <ProductList onHandleNewProduct={handleNewProduct} />;
       case 'Lista de Vendas':
         return <SalesTable />;
+      case 'Escanear Código de Barras':
+        return <BarcodeScanner />;
       default:
         return <Dashboard />;
     }
@@ -172,7 +175,15 @@ const AdminPage: React.FC<{ userType?: string }> = ({ userType }) => {
         ) : (
 
           <List sx={{ backgroundColor: '#5B1B64', height: '100vh', color: 'white' }}>
-            {['Dashboard', 'Cadastro de Usuários', 'Cadastro de Produtos', 'Lista de Usuários', 'Lista de Produtos', 'Lista de Vendas'].map((text) => (
+            {[
+              'Dashboard',
+              'Cadastro de Usuários',
+              'Cadastro de Produtos',
+              'Lista de Usuários',
+              'Lista de Produtos',
+              'Lista de Vendas',
+              'Escanear Código de Barras',
+            ].map((text) => (
               <ListItem
                 button
                 key={text}
