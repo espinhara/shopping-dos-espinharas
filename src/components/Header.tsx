@@ -111,26 +111,13 @@ const Header: React.FC<{ onSearch: (search: string) => void }> = ({ onSearch }) 
         >
           {/* Shopping dos Espinhara's */}
           <img
-            style={{ height: '45px', cursor: 'pointer' }}
+            style={{
+              height: '45px', cursor: 'pointer',
+            }}
             src={logo} alt="Logo" />
         </Typography>
-
         <div style={{ flexGrow: 1 }} />
-        {/* Barra de pesquisa */}
-        <SearchBar>
-          <SearchIconWrapper>
-            <Search />
-          </SearchIconWrapper>
-          <StyledInputBase
-            // value={search}
-            onChange={(event) => handleChangeSearch(event)}
-            placeholder="Buscar…"
-            inputProps={{ 'aria-label': 'search' }}
-          />
-        </SearchBar>
 
-
-        {/* Ícone do carrinho */}
         <div>
           <IconButton size="large" aria-label="mostrar itens no carrinho" onClick={handleCartOpen} color="inherit">
             <Badge badgeContent={itemCount} color="error">
