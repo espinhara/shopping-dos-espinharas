@@ -17,7 +17,6 @@ const Header: React.FC = () => {
   const hasUser = localStorage.getItem('user')
 
   useEffect(() => {
-
     if (hasUser && !user) {
       console.log(JSON.parse(hasUser))
       setUser(JSON.parse(hasUser))
