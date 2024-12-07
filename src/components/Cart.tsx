@@ -1,6 +1,6 @@
 // src/components/Cart.tsx
 import React from 'react';
-import { Menu, MenuItem, ListItemText, Divider } from '@mui/material';
+import { Menu, MenuItem, ListItemText, Divider, ListItemAvatar, Avatar } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 interface CartProps {
@@ -27,12 +27,13 @@ const Cart: React.FC<CartProps> = ({ anchorEl, open, onClose }) => {
       {items.length > 0 ? (
         <>
           {items.map(item => (
-            <MenuItem onClick={() => window.location.href = '/cart'} key={item.id}>
-
-              <ListItemText primary={item.name} secondary={`Quantidade: ${item.quantity}`} />
-            </MenuItem>
+            <><MenuItem onClick={() => window.location.href = '/cart'} key={item.id}>
+              <ListItemText primary={item.name.substring(0, 14).padEnd(17, ".")} secondary={`Quantidade: ${item.quantity}`} />
+              <ListItemAvatar>
+                <Avatar src={item.imageUrl}></Avatar>
+              </ListItemAvatar>
+            </MenuItem><Divider /></>
           ))}
-          <Divider />
         </>
       ) : (
         <MenuItem>
