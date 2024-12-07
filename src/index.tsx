@@ -27,17 +27,12 @@ const queryClient = new QueryClient({
 });
 const rootElement = document.getElementById('root');
 if (rootElement) {
-  const handleSearch = (term: string) => {
-    console.log(term)
-  }
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
-          {
-            <Header onSearch={handleSearch} />
-          }
+          <Header />
           <Router>
             <Routes>
               <Route path='/' element={

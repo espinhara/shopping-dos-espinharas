@@ -1,11 +1,34 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Box, Typography, Button, IconButton, List, ListItem, ListItemText, Modal, Paper, TextField, FormControl, FormLabel, RadioGroup, Select, MenuItem, FormControlLabel, Radio, ListItemAvatar, Avatar, Input, styled, InputBase, Grid } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Button,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Modal,
+  Paper,
+  TextField,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Select,
+  MenuItem,
+  FormControlLabel,
+  Radio,
+  ListItemAvatar,
+  Avatar,
+  styled,
+  InputBase,
+  Grid
+} from '@mui/material';
 import { RootState } from '../../store';
 import { updateItemQuantity, removeItemFromCart, removeItemsFromCart } from '../../store/slices/cartSlice';
 import { api } from '../../providers/api';
 import { CartItem } from '../../interfaces/cart';
-import { ArrowBack, RemoveShoppingCart, RemoveShoppingCartSharp, ShoppingCart, ShoppingCartCheckout, ShoppingCartOutlined, ShoppingCartRounded, ShoppingCartSharp } from '@mui/icons-material';
+import { ArrowBack, RemoveShoppingCart } from '@mui/icons-material';
 
 const CartPage: React.FC = () => {
   const dispatch = useDispatch();
