@@ -77,6 +77,7 @@ const cartSlice = createSlice({
           existingItem.price -= existingItem.price / (existingItem.quantity + 1);
         }
       }
+      localStorage.setItem('cart', JSON.stringify(state.items));
     },
     removeItemsFromCart: (state, action: PayloadAction<string>) => {
       const id = action.payload;
@@ -87,6 +88,7 @@ const cartSlice = createSlice({
         state.totalAmount -= existingItem.price * existingItem.quantity;
         state.items = state.items.filter(item => item.id !== id);
       }
+      localStorage.setItem('cart', JSON.stringify(state.items));
     },
     clearCart: (state) => {
       state.items = [];
