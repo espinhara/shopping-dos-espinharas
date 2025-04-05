@@ -28,6 +28,25 @@ const queryClient = new QueryClient({
 const rootElement = document.getElementById('root');
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
+  console.clear();
+  console.log(
+    '%cBrechó da Neide',
+    `
+      color: #5B1B64;
+      font-size: 24px;
+      font-weight: bold;
+      background-color: #df9c10;
+      padding: 10px;
+      border-radius: 5px;
+      border: 2px solid white;
+      text-shadow: 
+        -1px -1px 0 white,
+         1px -1px 0 white,
+        -1px  1px 0 white,
+         1px  1px 0 white;
+    `
+  );
+
   root.render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
